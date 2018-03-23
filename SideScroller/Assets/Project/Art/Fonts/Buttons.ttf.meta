@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 12f457e6f72034b4a8128f9d94bfafed
+timeCreated: 1521765369
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Hemi Head
+  fontNames:
+  - Hemi Head
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
