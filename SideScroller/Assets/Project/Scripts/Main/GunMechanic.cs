@@ -11,12 +11,13 @@ public class GunMechanic : MonoBehaviour {
 
     [HideInInspector]
     public int shotsAvailable = 3;
+
     [HideInInspector]
     public int dashesAvailable = 1;
 
-    private int dashAttemptCounter = 0;
+    [HideInInspector]
+    public float chargeUpTime;
 
-    private float chargeUpTime;
     private float chargeUpNeeded = 1f;
     private float maxChargeTime = 2f;
 
@@ -39,9 +40,12 @@ public class GunMechanic : MonoBehaviour {
 
     [HideInInspector]
     public bool canShoot = true;
-    private bool canDash = true;
+    [HideInInspector]
+    public bool canDash = true;
 
     private bool canCharge = true;
+
+    public bool charging = false;
 
     public Transform direction;
 
@@ -196,6 +200,7 @@ public class GunMechanic : MonoBehaviour {
         if (Input.GetMouseButton(1) && canDash)
         {
             canCharge = false;
+            charging = true;
             if (zeroGravity.inZeroGravityZone)
             {
                 chargeUpTime += gravityTimeScale * Time.deltaTime;
@@ -208,6 +213,7 @@ public class GunMechanic : MonoBehaviour {
             if (chargeUpTime >= maxChargeTime)
             {
                 playerRigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+                charging = false;
                 dashesAvailable = 0;
             }
             else
@@ -229,6 +235,7 @@ public class GunMechanic : MonoBehaviour {
             {
                 dashTime = 0;
                 dashing = true;
+                charging = false;
                 if (chargeUpTime >= chargeUpNeeded && dashesAvailable > 0)
                 {
                     playerRigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
