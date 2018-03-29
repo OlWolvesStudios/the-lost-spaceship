@@ -8,6 +8,12 @@ public class Pickups : MonoBehaviour {
 
     public int researchCollected = 0;
 
+    void Start()
+    {
+        researchCollected = 0;
+        isUpgraded = false;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Upgrade"))

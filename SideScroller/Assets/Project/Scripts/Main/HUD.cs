@@ -18,6 +18,8 @@ public class HUD : MonoBehaviour {
     public GameObject gameHud;
     public GameObject dashReady;
 
+    public GameObject fadeIn;
+
     public Slider rechargeSlider;
     public Slider refreshSlider;
 
@@ -32,10 +34,15 @@ public class HUD : MonoBehaviour {
     private bool showRecharge = false;
     private bool showRefresh = true;
 
+    private bool fadeInFinished = false;
+
     private float dashCharge = 1.1f;
+    private float fadeInTime = 1.5f;
 
     void Start()
     {
+        fadeIn.SetActive(true);
+
         for (int i = 0; i < 2; i++)
         {
             currentLives[i].SetActive(true);
@@ -44,9 +51,22 @@ public class HUD : MonoBehaviour {
 
     void Update()
     {
+        if (!fadeInFinished)
+        {
+            fadeInTime -= Time.deltaTime;
+        }
+
+        if (fadeInTime <= 0)
+        {
+            fadeIn.SetActive(false);
+            fadeInFinished = true;
+        }
+
         if (PauseMenu.isPaused)
         {
             gameHud.SetActive(false);
+            fadeIn.SetActive(false);
+            fadeInFinished = true;
         }
         else
         {

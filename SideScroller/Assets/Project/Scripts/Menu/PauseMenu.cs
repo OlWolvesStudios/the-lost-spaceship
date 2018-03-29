@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
 
     public static bool isPaused = false;
+    private bool isFading = false;
 
     public GameObject pauseMenuUI;
 
     public GameObject reticle;
 
     public GameObject GameHUD;
+
+    public GameObject fadeOut;
 
     void Update ()
     {
@@ -51,6 +54,22 @@ public class PauseMenu : MonoBehaviour {
 
     public void MainMenu()
     {
+        if (!isFading)
+        {
+            StartCoroutine(ReturnToMenu());
+        }
+    }
+
+    IEnumerator ReturnToMenu()
+    {
+        isFading = true;
+        fadeOut.SetActive(true);
+        yield return new WaitForSecondsRealtime(1.5f);
+        pauseMenuUI.SetActive(false);
+        reticle.SetActive(true);
+        isPaused = false;
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
+        yield return null;
     }
 }

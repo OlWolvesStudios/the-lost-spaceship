@@ -165,6 +165,7 @@ public class PlayerMove : MonoBehaviour
 		//get distance to ground, from centre of collider (where floorcheckers should be)
 		float dist = GetComponent<Collider>().bounds.extents.y;
         //check whats at players feet, at each floorcheckers position
+
         if (Mathf.Sign(Physics.gravity.y) == -1)
         {
             foreach (Transform check in floorCheckers)
@@ -215,6 +216,7 @@ public class PlayerMove : MonoBehaviour
             foreach (Transform check in floorCheckers)
             {
                 RaycastHit hit;
+
                 if (Physics.Raycast(check.position, Vector3.up, out hit, dist + 0.05f))
                 {
                     if (!hit.transform.GetComponent<Collider>().isTrigger)
@@ -255,7 +257,8 @@ public class PlayerMove : MonoBehaviour
                 }
             }
         }
-		movingObjSpeed = Vector3.zero;
+
+        movingObjSpeed = Vector3.zero;
 		//no none of the floorchecks hit anything, we must be in the air (or water)
 		return false;
 	}

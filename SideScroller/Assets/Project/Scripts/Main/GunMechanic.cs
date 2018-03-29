@@ -74,7 +74,11 @@ public class GunMechanic : MonoBehaviour {
             // Allows player to shoot
             Shoot();
             // Allows player to dash
-            Dash();
+            if (Pickups.isUpgraded)
+            {
+                Dash();
+            }
+
         }
     }
 
@@ -88,16 +92,6 @@ public class GunMechanic : MonoBehaviour {
         else
         {
             shotForce = shotForceValue;
-        }
-
-        // If upgrade has been picked up then the player gains the ability to dash
-        if (Pickups.isUpgraded)
-        {
-            canDash = true;
-        }
-        else
-        {
-            canDash = false;
         }
 
         // If the gun is neither full nor out of shots then reload individual shots
@@ -166,6 +160,16 @@ public class GunMechanic : MonoBehaviour {
 
     void Dash()
     {
+        // If upgrade has been picked up then the player gains the ability to dash
+        if (Pickups.isUpgraded)
+        {
+            canDash = true;
+        }
+        else
+        {
+            canDash = false;
+        }
+
         // Checks if the player has a dash available
         if (dashesAvailable == 0)
         {

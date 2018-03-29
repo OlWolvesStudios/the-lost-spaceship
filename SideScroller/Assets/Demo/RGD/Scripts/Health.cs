@@ -116,11 +116,12 @@ public class Health : MonoBehaviour
 		}
 		else
 			Destroy (gameObject);
-		
-		if (spawnOnDeath.Length != 0)
-			foreach(GameObject obj in spawnOnDeath)
-				Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
-	}
+
+        if (spawnOnDeath.Length != 0)
+            foreach (GameObject obj in spawnOnDeath)
+                Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
+
+    }
 	
 	//calculate impact damage on collision
 	void OnCollisionEnter(Collision col)
