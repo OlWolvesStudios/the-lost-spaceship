@@ -9,12 +9,4 @@ public class Lives : MonoBehaviour {
     public Health health;
 
     public int lives = 3;
-
-	void Update ()
-    {
-        if (lives <= 0)
-        {
-            SceneManager.LoadScene(2);
-        }
-	}
 }

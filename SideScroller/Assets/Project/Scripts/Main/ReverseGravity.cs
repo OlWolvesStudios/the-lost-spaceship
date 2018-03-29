@@ -5,13 +5,12 @@ using UnityEngine;
 public class ReverseGravity : MonoBehaviour {
 
     public float timeToGravifyChange = 5f;
-    private float nextGravityShiftIn;
+    [HideInInspector]
+    public float nextGravityShiftIn;
 
     public bool inReversableGravityZone = false;
 
     public GameObject player;
-    public GameObject floorChecks;
-    public GameObject ivertedFloorChecks;
 
     public CameraFollow mainCamera;
 
@@ -22,19 +21,19 @@ public class ReverseGravity : MonoBehaviour {
 
     void Update ()
     {
-        if (Mathf.Sign(Physics.gravity.y) == -1)
-        {
-            player.transform.localScale = new Vector3(1, 1, 1);
-            mainCamera.targetOffset.y = 2;
-        }
-        else
-        {
-            player.transform.localScale = new Vector3(1, -1, 1);
-            mainCamera.targetOffset.y = -2;
-        }
-
         if (inReversableGravityZone)
         {
+            if (Mathf.Sign(Physics.gravity.y) == -1)
+            {
+                player.transform.localScale = new Vector3(1, 1, 1);
+                mainCamera.targetOffset.y = 2;
+            }
+            else
+            {
+                player.transform.localScale = new Vector3(1, -1, 1);
+                mainCamera.targetOffset.y = -2;
+            }
+            
             nextGravityShiftIn -= 1 * Time.deltaTime;
 
             if (nextGravityShiftIn <= 0)
@@ -42,22 +41,6 @@ public class ReverseGravity : MonoBehaviour {
                 Physics.gravity *= -1;
                 nextGravityShiftIn = timeToGravifyChange;
             }
-        }
-
-        FloorChecks();
-    }
-
-    void FloorChecks()
-    {
-        if (Mathf.Sign(Physics.gravity.y) == -1)
-        {
-            ivertedFloorChecks.SetActive(false);
-            floorChecks.SetActive(true);
-        }
-        else if (Mathf.Sign(Physics.gravity.y) == 1)
-        {
-            ivertedFloorChecks.SetActive(true);
-            floorChecks.SetActive(false);
         }
     }
 
