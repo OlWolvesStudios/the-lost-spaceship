@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
+    //sounds
+    public AudioSource aSource = null;
+    public AudioSource bSource = null;
+
     public GameObject panels;
 
     public GameObject skipText;
@@ -18,6 +22,15 @@ public class MainMenu : MonoBehaviour {
     void Start()
     {
         fadeIn.SetActive(true);
+        if(aSource.clip)
+        {
+            aSource.Play();
+        }
+        if (bSource.clip)
+        {
+            bSource.Play();
+            bSource.mute = true;
+        }
     }
 
     void Update()
@@ -41,6 +54,9 @@ public class MainMenu : MonoBehaviour {
 
         if (pressed)
         {
+            aSource.mute = true;
+            bSource.mute = false;
+
             panels.SetActive(true);
             animTime -= Time.deltaTime;
             if (animTime <= 0)
