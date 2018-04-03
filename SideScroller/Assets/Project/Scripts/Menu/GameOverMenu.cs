@@ -49,7 +49,7 @@ public class GameOverMenu : MonoBehaviour {
     {
         isLoading = true;
         panel.SetActive(true);
-        yield return new WaitForSeconds(5.45f);
+        yield return new WaitForSeconds(6.15f);
         SceneManager.LoadScene(0);
         yield return null;
     }

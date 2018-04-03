@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour {
 
     public GameObject fadeIn;
 
-    float animTime = 21.15f;
+    float animTime = 35.75f;
     bool pressed = false;
     bool skip = false;
 
