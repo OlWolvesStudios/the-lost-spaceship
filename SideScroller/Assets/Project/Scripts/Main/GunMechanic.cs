@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class GunMechanic : MonoBehaviour {
 
+    // sounds
+    private AudioSource aSource;
+
+    public AudioClip gunShotSound;
+    public AudioClip chargeSound;
+    public AudioClip dashSound;
+
     private const float MAX_DISTANCE_FROM_GUN = 0.35f;
 
     public int shotForceValue = 10;
@@ -64,6 +71,7 @@ public class GunMechanic : MonoBehaviour {
     {
         shotRecharge = 0;
         playerRigidbody = GetComponent<Rigidbody>();
+        aSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -155,6 +163,12 @@ public class GunMechanic : MonoBehaviour {
             maxChargeTime = 0f;
             shotRefresh = 0f;
             ApplyForce();
+
+            if (gunShotSound)
+            {
+                aSource.clip = gunShotSound;
+                aSource.PlayOneShot(gunShotSound, 0.5f);
+            }
         }
     }
 
@@ -203,6 +217,12 @@ public class GunMechanic : MonoBehaviour {
 
         if (Input.GetMouseButton(1) && canDash)
         {
+            if (!aSource.isPlaying && chargeSound)
+            {
+                aSource.clip = chargeSound;
+                aSource.PlayOneShot(chargeSound, 0.5f);
+            }
+
             canCharge = false;
             charging = true;
             if (zeroGravity.inZeroGravityZone)
@@ -242,6 +262,12 @@ public class GunMechanic : MonoBehaviour {
                 charging = false;
                 if (chargeUpTime >= chargeUpNeeded && dashesAvailable > 0)
                 {
+                    if (dashSound)
+                    {
+                        aSource.clip = dashSound;
+                        aSource.PlayOneShot(dashSound, 0.5f);
+                    }
+
                     playerRigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
                     if (zeroGravity.inZeroGravityZone)
                     {
