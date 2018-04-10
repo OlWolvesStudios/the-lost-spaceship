@@ -8,7 +8,7 @@ public class VictoryMenu : MonoBehaviour {
     public GameObject panels;
     public GameObject fadeOut;
 
-    private float fadeTime = 5.75f;
+    private float fadeTime = 8.75f;
 
     private bool animFinished = false;
     private bool isLoading = false;
