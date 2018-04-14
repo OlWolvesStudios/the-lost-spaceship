@@ -7,7 +7,8 @@ public class Health : MonoBehaviour
 {
 	public AudioClip impactSound;					//play when object imacts with something else
 	public AudioClip hurtSound;						//play when this object recieves damage
-	public AudioClip deadSound;						//play when this object dies
+    public AudioClip glassBreakSound;
+    public AudioClip deadSound;						//play when this object dies
 	public int currentHealth = 1;					//health of the object
 	public bool takeImpactDmg;						//does this object take damage from impacts?
 	public bool onlyRigidbodyImpact;				//if yes to the above, does it only take impact damage from other rigidbodies?
@@ -56,9 +57,17 @@ public class Health : MonoBehaviour
 		{
 			flashing = true;
 			stopFlashTime = Time.time + flashDuration;
-			if (hurtSound)
-				AudioSource.PlayClipAtPoint(hurtSound, transform.position);
-		}
+			if (!aSource.isPlaying && hurtSound)
+            {
+                aSource.clip = hurtSound;
+                aSource.PlayOneShot(hurtSound, 1.0f);
+            }
+            if (glassBreakSound)
+            {
+                aSource.PlayOneShot(glassBreakSound, 1.0f);
+            }
+
+        }
 		h = currentHealth;
 		
 		//flashing
@@ -76,6 +85,12 @@ public class Health : MonoBehaviour
 		dead = (currentHealth <= 0) ? true : false;
         if (dead)
         {
+            if (!aSource.isPlaying && deadSound)
+            {
+                aSource.clip = deadSound;
+                aSource.PlayOneShot(deadSound, 1.0f);
+            }
+
             lives.lives--;
             Death();
         }
@@ -102,7 +117,9 @@ public class Health : MonoBehaviour
 			throwing.ThrowPickup();
 		
 		if (deadSound)
-			AudioSource.PlayClipAtPoint(deadSound, transform.position);
+        {
+            AudioSource.PlayClipAtPoint(deadSound, transform.position, 1.0f);
+        }
 		flashing = false;
 		flashObject.GetComponent<Renderer>().material.color = originalColor;
 		if(respawn)
@@ -115,22 +132,23 @@ public class Health : MonoBehaviour
 			currentHealth = defHealth;
 		}
 		else
-			Destroy (gameObject);
-		
-		if (spawnOnDeath.Length != 0)
-			foreach(GameObject obj in spawnOnDeath)
-				Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
-	}
+        {
+            Destroy(gameObject);
+        }
+
+        if (spawnOnDeath.Length != 0)
+            foreach (GameObject obj in spawnOnDeath)
+                Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
+
+    }
 	
 	//calculate impact damage on collision
 	void OnCollisionEnter(Collision col)
 	{
-		if(!aSource.isPlaying && impactSound)
+		if(impactSound)
 		{
-			aSource.clip = impactSound;
-			aSource.volume = col.relativeVelocity.magnitude/30;
-			aSource.Play();
-		}
+            aSource.PlayOneShot(impactSound, 0.5f);
+        }
 			
 		//make sure we take impact damage from this object
 		if (!takeImpactDmg)
