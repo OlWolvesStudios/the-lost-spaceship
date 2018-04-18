@@ -5,8 +5,16 @@ using UnityEngine;
 public class ZeroGravity : MonoBehaviour {
 
     public bool inZeroGravityZone = false;
-	
-	void Update ()
+
+    void Start()
+    {
+        if (Physics.gravity.y == -0.1f)
+        {
+            Physics.gravity = new Vector3(0, -25, 0);
+        }
+    }
+
+    void Update ()
     {
         if (inZeroGravityZone)
         {

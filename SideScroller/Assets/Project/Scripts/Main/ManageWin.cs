@@ -9,6 +9,8 @@ public class ManageWin : MonoBehaviour {
 
     private bool isLoading = false;
 
+    public PauseMenu pauseMenu;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -22,6 +24,7 @@ public class ManageWin : MonoBehaviour {
 
     IEnumerator EndGame()
     {
+        pauseMenu.canBePaused = false;
         isLoading = true;
         fadeOut.SetActive(true);
         yield return new WaitForSeconds(1.5f);

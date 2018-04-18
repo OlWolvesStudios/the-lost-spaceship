@@ -1,0 +1,276 @@
+fileFormatVersion: 2
+guid: f5c138a3a6698f04dbfeb1b915e5e342
+timeCreated: 1524088931
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Box003
+    100002: Box006
+    100004: Box007
+    100006: Box008
+    100008: Box017
+    100010: Box018
+    100012: Box019
+    100014: Box020
+    100016: Box021
+    100018: Box022
+    100020: Box023
+    100022: Box024
+    100024: Box025
+    100026: Box026
+    100028: Box027
+    100030: Box028
+    100032: Cylinder001
+    100034: Cylinder005
+    100036: Cylinder007
+    100038: Cylinder008
+    100040: Cylinder009
+    100042: Cylinder010
+    100044: Cylinder011
+    100046: Cylinder012
+    100048: Cylinder013
+    100050: Cylinder014
+    100052: Cylinder015
+    100054: Cylinder016
+    100056: Door Part 1
+    100058: Door Part 2
+    100060: //RootNode
+    100062: Frame
+    100064: Plane007
+    100066: Sphere001
+    100068: Sphere002
+    100070: Sphere003
+    100072: Sphere004
+    100074: Top Thingy
+    100076: Top Thingy 2
+    400000: Box003
+    400002: Box006
+    400004: Box007
+    400006: Box008
+    400008: Box017
+    400010: Box018
+    400012: Box019
+    400014: Box020
+    400016: Box021
+    400018: Box022
+    400020: Box023
+    400022: Box024
+    400024: Box025
+    400026: Box026
+    400028: Box027
+    400030: Box028
+    400032: Cylinder001
+    400034: Cylinder005
+    400036: Cylinder007
+    400038: Cylinder008
+    400040: Cylinder009
+    400042: Cylinder010
+    400044: Cylinder011
+    400046: Cylinder012
+    400048: Cylinder013
+    400050: Cylinder014
+    400052: Cylinder015
+    400054: Cylinder016
+    400056: Door Part 1
+    400058: Door Part 2
+    400060: //RootNode
+    400062: Frame
+    400064: Plane007
+    400066: Sphere001
+    400068: Sphere002
+    400070: Sphere003
+    400072: Sphere004
+    400074: Top Thingy
+    400076: Top Thingy 2
+    2300000: Box003
+    2300002: Box006
+    2300004: Box007
+    2300006: Box008
+    2300008: Box017
+    2300010: Box018
+    2300012: Box019
+    2300014: Box020
+    2300016: Box021
+    2300018: Box022
+    2300020: Box023
+    2300022: Box024
+    2300024: Box025
+    2300026: Box026
+    2300028: Box027
+    2300030: Box028
+    2300032: Cylinder001
+    2300034: Cylinder005
+    2300036: Cylinder007
+    2300038: Cylinder008
+    2300040: Cylinder009
+    2300042: Cylinder010
+    2300044: Cylinder011
+    2300046: Cylinder012
+    2300048: Cylinder013
+    2300050: Cylinder014
+    2300052: Cylinder015
+    2300054: Cylinder016
+    2300056: Door Part 1
+    2300058: Door Part 2
+    2300060: Frame
+    2300062: Plane007
+    2300064: Sphere001
+    2300066: Sphere002
+    2300068: Sphere003
+    2300070: Sphere004
+    2300072: Top Thingy
+    2300074: Top Thingy 2
+    3300000: Box003
+    3300002: Box006
+    3300004: Box007
+    3300006: Box008
+    3300008: Box017
+    3300010: Box018
+    3300012: Box019
+    3300014: Box020
+    3300016: Box021
+    3300018: Box022
+    3300020: Box023
+    3300022: Box024
+    3300024: Box025
+    3300026: Box026
+    3300028: Box027
+    3300030: Box028
+    3300032: Cylinder001
+    3300034: Cylinder005
+    3300036: Cylinder007
+    3300038: Cylinder008
+    3300040: Cylinder009
+    3300042: Cylinder010
+    3300044: Cylinder011
+    3300046: Cylinder012
+    3300048: Cylinder013
+    3300050: Cylinder014
+    3300052: Cylinder015
+    3300054: Cylinder016
+    3300056: Door Part 1
+    3300058: Door Part 2
+    3300060: Frame
+    3300062: Plane007
+    3300064: Sphere001
+    3300066: Sphere002
+    3300068: Sphere003
+    3300070: Sphere004
+    3300072: Top Thingy
+    3300074: Top Thingy 2
+    4300000: Box003
+    4300002: Sphere001
+    4300004: Cylinder001
+    4300006: Cylinder005
+    4300008: Box006
+    4300010: Box007
+    4300012: Sphere002
+    4300014: Sphere003
+    4300016: Sphere004
+    4300018: Cylinder007
+    4300020: Cylinder008
+    4300022: Cylinder009
+    4300024: Cylinder010
+    4300026: Box008
+    4300028: Plane007
+    4300030: Box017
+    4300032: Box018
+    4300034: Box019
+    4300036: Box020
+    4300038: Door Part 1
+    4300040: Door Part 2
+    4300042: Frame
+    4300044: Top Thingy
+    4300046: Top Thingy 2
+    4300048: Box021
+    4300050: Box022
+    4300052: Box023
+    4300054: Box024
+    4300056: Box025
+    4300058: Box026
+    4300060: Box027
+    4300062: Box028
+    4300064: Cylinder011
+    4300066: Cylinder012
+    4300068: Cylinder013
+    4300070: Cylinder014
+    4300072: Cylinder015
+    4300074: Cylinder016
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

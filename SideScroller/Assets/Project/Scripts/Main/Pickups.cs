@@ -5,6 +5,9 @@ using UnityEngine;
 public class Pickups : MonoBehaviour {
 
     public static bool isUpgraded = false;
+    public static bool dataCollected = false;
+
+    public Morale morale;
 
     public AudioClip researchGetSound;
     public AudioClip upgradeGetSound;
@@ -34,11 +37,13 @@ public class Pickups : MonoBehaviour {
 
         if (other.CompareTag("Research"))
         {
+            morale.moraleS += 15f;
             if (researchGetSound)
             {
                 aSource.PlayOneShot(researchGetSound, 1.0f);
             }
 
+            dataCollected = true;
             researchCollected++;
             Destroy(other.gameObject);
         }

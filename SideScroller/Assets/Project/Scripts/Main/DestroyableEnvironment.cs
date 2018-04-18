@@ -24,7 +24,18 @@ public class DestroyableEnvironment : MonoBehaviour {
     {
         if (other.CompareTag("Player"))
         {
-            if (gun.dashing && gun.dashTime > 0)
+            if (gun.dashing && gun.dashIsCounting)
+            {
+                health--;
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (gun.dashing && gun.dashIsCounting)
             {
                 health--;
             }

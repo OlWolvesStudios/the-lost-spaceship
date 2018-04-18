@@ -16,6 +16,10 @@ public class ReverseGravity : MonoBehaviour {
 
     void Start()
     {
+        if (Mathf.Sign(Physics.gravity.y) == 1)
+        {
+            Physics.gravity *= -1;
+        }
         nextGravityShiftIn = timeToGravifyChange;
     }
 

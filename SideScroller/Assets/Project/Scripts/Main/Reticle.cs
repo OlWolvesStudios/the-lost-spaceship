@@ -14,7 +14,6 @@ public class Reticle : MonoBehaviour {
     void Update ()
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-
         reticleRectTransform.position = mousePosition;
     }
 }

@@ -9,7 +9,6 @@ public class GunMechanic : MonoBehaviour {
 
     public AudioClip gunShotSound;
     public AudioClip chargeSound;
-    public AudioClip dashSound;
 
     private const float MAX_DISTANCE_FROM_GUN = 0.35f;
 
@@ -21,12 +20,6 @@ public class GunMechanic : MonoBehaviour {
 
     [HideInInspector]
     public int dashesAvailable = 1;
-
-    [HideInInspector]
-    public float chargeUpTime;
-
-    private float chargeUpNeeded = 1f;
-    private float maxChargeTime = 2f;
 
     public float shotRecharge;
     public float dashRecharge;
@@ -52,7 +45,15 @@ public class GunMechanic : MonoBehaviour {
 
     private bool canCharge = true;
 
-    public bool charging = false;
+    private bool shooting = false;
+    private bool isShooting = false;
+    private bool inDash = false;
+    private bool isDashing = false;
+
+    private bool startDashTime = false;
+
+    public bool dashIsCounting = false;
+
 
     public Transform direction;
 
@@ -61,6 +62,10 @@ public class GunMechanic : MonoBehaviour {
     private Vector3 offset;
 
     public ZeroGravity zeroGravity;
+
+    public LookAt lookAt;
+
+    public PlayerMove playerMove;
 
     public float ShotRechargeRate
     {
@@ -156,18 +161,61 @@ public class GunMechanic : MonoBehaviour {
             shotsAvailable = 3;
         }
 
-        // Shoot
-        if (Input.GetMouseButtonDown(0) && canShoot)
-        {
-            shotsAvailable--;
-            maxChargeTime = 0f;
-            shotRefresh = 0f;
-            ApplyForce();
 
-            if (gunShotSound)
+        if (Input.GetAxis("Trigger") == -1 && !shooting)
+        {
+            isShooting = true;
+        }
+
+        if (Input.GetAxis("Trigger") == -1 && shooting)
+        {
+            isShooting = false;
+        }
+
+        if (Input.GetAxis("Trigger") > -0.2)
+        {
+            shooting = false;
+        }
+
+        // Shoot
+        if (lookAt.controller)
+        {
+            if (Input.GetAxis("Trigger") == -1 && canShoot && isShooting)
             {
-                aSource.clip = gunShotSound;
-                aSource.PlayOneShot(gunShotSound, 0.5f);
+                if (playerRigidbody.mass != 1.0f)
+                {
+                    playerRigidbody.mass = 1.0f;
+                }
+                shooting = true;
+                shotsAvailable--;
+                shotRefresh = 0f;
+                ApplyForce();
+
+                if (gunShotSound)
+                {
+                    aSource.clip = gunShotSound;
+                    aSource.PlayOneShot(gunShotSound, 0.5f);
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetButtonDown("Shoot") && canShoot)
+            {
+                if (playerRigidbody.mass != 1.0f)
+                {
+                    playerRigidbody.mass = 1.0f;
+                }
+                shooting = true;
+                shotsAvailable--;
+                shotRefresh = 0f;
+                ApplyForce();
+
+                if (gunShotSound)
+                {
+                    aSource.clip = gunShotSound;
+                    aSource.PlayOneShot(gunShotSound, 0.5f);
+                }
             }
         }
     }
@@ -193,6 +241,7 @@ public class GunMechanic : MonoBehaviour {
         // Dash gets reloaded
         if (!canDash && dashesAvailable == 0)
         {
+            dashIsCounting = true;
             if (zeroGravity.inZeroGravityZone)
             {
                 dashRecharge += gravityTimeScale * Time.deltaTime;
@@ -210,42 +259,80 @@ public class GunMechanic : MonoBehaviour {
             dashesAvailable = 1;
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (lookAt.controller)
         {
-            maxChargeTime = 2f;
-        }
-
-        if (Input.GetMouseButton(1) && canDash)
-        {
-            if (!aSource.isPlaying && chargeSound)
+            if (Input.GetAxis("Trigger") == 1f && !isDashing)
             {
-                aSource.clip = chargeSound;
-                aSource.PlayOneShot(chargeSound, 0.5f);
+                inDash = true;
             }
 
-            canCharge = false;
-            charging = true;
-            if (zeroGravity.inZeroGravityZone)
+            if (Input.GetAxis("Trigger") == 1f && isDashing)
             {
-                chargeUpTime += gravityTimeScale * Time.deltaTime;
-            }
-            else
-            {
-                chargeUpTime += Time.deltaTime;
+                inDash = false;
             }
 
-            if (chargeUpTime >= maxChargeTime)
+            if (Input.GetAxis("Trigger") < 0.2)
             {
-                playerRigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-                charging = false;
-                dashesAvailable = 0;
+                isDashing = false;
             }
-            else
+
+            if (Input.GetAxis("Trigger") == 1f && inDash && canDash)
             {
-                playerRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                startDashTime = true;
+                if (playerMove.grounded)
+                    playerRigidbody.mass = 0.55f;
+
+                dashTime = 0;
+                dashing = true;
+                isDashing = true;
+                if (dashesAvailable > 0)
+                {
+                    if (zeroGravity.inZeroGravityZone)
+                    {
+                        shotForce = (shotForceValue / 2) * 3;
+                    }
+                    else
+                    {
+                        shotForce = shotForceValue * 3;
+                    }
+                    dashesAvailable--;
+                    DashForce();
+
+                }
+                canCharge = true;
+                canDash = true;
             }
         }
         else
+        {
+            if (Input.GetButtonDown("Dash") && canDash)
+            {
+                startDashTime = true;
+                if (playerMove.grounded)
+                    playerRigidbody.mass = 0.55f;
+
+                dashTime = 0;
+                dashing = true;
+                if (dashesAvailable > 0)
+                {
+                    if (zeroGravity.inZeroGravityZone)
+                    {
+                        shotForce = (shotForceValue / 2) * 3;
+                    }
+                    else
+                    {
+                        shotForce = shotForceValue * 3;
+                    }
+                    dashesAvailable--;
+                    DashForce();
+
+                }
+                canCharge = true;
+                canDash = true;
+            }
+        }
+
+        if (startDashTime)
         {
             if (zeroGravity.inZeroGravityZone)
             {
@@ -255,55 +342,37 @@ public class GunMechanic : MonoBehaviour {
             {
                 dashTime += Time.deltaTime;
             }
-            if (Input.GetMouseButtonUp(1))
-            {
-                dashTime = 0;
-                dashing = true;
-                charging = false;
-                if (chargeUpTime >= chargeUpNeeded && dashesAvailable > 0)
-                {
-                    if (dashSound)
-                    {
-                        aSource.clip = dashSound;
-                        aSource.PlayOneShot(dashSound, 0.5f);
-                    }
-
-                    playerRigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-                    if (zeroGravity.inZeroGravityZone)
-                    {
-                        shotForce = (shotForceValue / 2) * 3;
-                    }
-                    else
-                    {
-                        shotForce = shotForceValue * 3;
-                    }
-                    chargeUpTime = 0;
-                    dashesAvailable--;
-                    DashForce();
-                }
-                else
-                {
-                    dashesAvailable = 0;
-                }
-                canCharge = true;
-                canDash = true;
-            }
-
-            if (dashTime >= 0.2f)
-            {
-                dashTime = 0;
-                dashing = false;
-                playerRigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-            }
-            shotForce = shotForceValue;
-            chargeUpTime = 0;
         }
+
+        if (dashTime >= 0.2f)
+        {
+            if (playerRigidbody.mass != 1.0f)
+            {
+                playerRigidbody.mass = 1.0f;
+            }
+
+            dashIsCounting = false;
+            startDashTime = false;
+            dashTime = 0;
+            dashing = false;
+            playerRigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        }
+        shotForce = shotForceValue;
     }
 
     void ApplyForce()
     {
         playerRigidbody.velocity = Vector3.zero;
-        offset = new Vector3(0, 1, 0);
+
+        if (Mathf.Sign(Physics.gravity.y) == -1)
+        {
+            offset = new Vector3(0, 1, 0);
+        }
+        else
+        {
+            offset = new Vector3(0, -1, 0);
+        }
+
         Vector3 forceDirection = ((transform.position + offset) - direction.position).normalized;
 
         forceDirection.x = Mathf.Clamp(forceDirection.x, -MAX_DISTANCE_FROM_GUN, MAX_DISTANCE_FROM_GUN);

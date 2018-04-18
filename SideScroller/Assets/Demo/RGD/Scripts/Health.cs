@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
 	public bool respawn;							//should this object respawn when killed?
 	public string[] impactFilterTag;				//if we take impact damage, don't take impact damage from these objects (tags)
 	public float hitFlashDelay = 0.1f;				//how long each flash lasts (smaller number = more rapid flashing)
-	public float flashDuration = 0.9f;				//how long flash lasts (object is invulnerable to damage during this time)
+	public float flashDuration = 1.0f;				//how long flash lasts (object is invulnerable to damage during this time)
 	public Color hitFlashColor = Color.red;			//color object should flash when it takes damage
 	public Transform flashObject;					//object to flash upon receiving damage (ie: a child mesh). If left blank it defaults to this object.
 	public GameObject[] spawnOnDeath;				//objects to spawn upon death of this object (ie: a particle effect or a coin)
@@ -33,6 +33,8 @@ public class Health : MonoBehaviour
 	private Throwing throwing;
 	private Renderer flashRender;
 	private AudioSource aSource;
+
+    public GameObject blood;
 	
 	//setup
 	void Awake()
@@ -76,7 +78,8 @@ public class Health : MonoBehaviour
 			Flash ();
 			if (Time.time > stopFlashTime)
 			{
-				flashRender.material.color = originalColor;
+                blood.SetActive(false);
+                flashRender.material.color = originalColor;
 				flashing = false;
 			}
 		}
@@ -92,6 +95,7 @@ public class Health : MonoBehaviour
             }
 
             lives.lives--;
+            blood.SetActive(false);
             Death();
         }
 	}
@@ -99,11 +103,12 @@ public class Health : MonoBehaviour
 	//toggle the flashObject material tint color
 	void Flash()
 	{
-		flashRender.material.color = (hitColor) ? hitFlashColor : originalColor;
+        blood.SetActive(true);
+        flashRender.material.color = (hitColor) ? hitFlashColor : originalColor;
 		if(Time.time > nextFlash)
 		{
 			hitColor = !hitColor;
-			nextFlash = Time.time + hitFlashDelay;
+            nextFlash = Time.time + hitFlashDelay;
 		}
 	}
 	

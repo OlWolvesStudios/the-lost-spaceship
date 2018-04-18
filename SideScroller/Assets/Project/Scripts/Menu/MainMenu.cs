@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    //sounds
+    // Sounds
     public AudioSource aSource = null;
     public AudioSource bSource = null;
 
@@ -15,7 +15,9 @@ public class MainMenu : MonoBehaviour {
 
     public GameObject fadeIn;
 
-    float animTime = 35.75f;
+    public GameObject fadeOut;
+
+    float animTime = 46.25f;
     bool pressed = false;
     bool skip = false;
 
@@ -35,20 +37,11 @@ public class MainMenu : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Debug.Log("Are you sure you want to quit?");
-        }
-        else if (Input.anyKeyDown)
-        {
-            pressed = true;
-        }
-
         if (skip)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetButtonDown("Escape") || Input.GetButtonDown("BButton") || Input.GetButtonDown("StartButton"))
             {
-                SceneManager.LoadScene(1);
+                StartCoroutine(LoadLevel());
             }
         }
 
@@ -64,11 +57,23 @@ public class MainMenu : MonoBehaviour {
                 pressed = false;
                 SceneManager.LoadScene(1);
             }
-            else if (Input.GetKeyDown(KeyCode.Escape))
+            else if (Input.GetButtonDown("Escape") || Input.GetButtonDown("BButton") || Input.GetButtonDown("StartButton"))
             {
                 skipText.SetActive(true);
                 skip = true;
             }
         }
+        if (Input.anyKeyDown)
+        {
+            pressed = true;
+        }
+    }
+
+    IEnumerator LoadLevel()
+    {
+        fadeOut.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(1);
+        yield return null;
     }
 }

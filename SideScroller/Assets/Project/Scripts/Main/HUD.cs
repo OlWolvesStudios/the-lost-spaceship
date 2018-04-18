@@ -29,14 +29,11 @@ public class HUD : MonoBehaviour {
 
     public Slider dashSlider;
 
-    public Text researchCollectedText;
-
     private bool showRecharge = false;
     private bool showRefresh = true;
 
     private bool fadeInFinished = false;
 
-    private float dashCharge = 1.1f;
     private float fadeInTime = 1.5f;
 
     void Start()
@@ -76,7 +73,6 @@ public class HUD : MonoBehaviour {
             DisplayHealth();
             DisplayShotRecharge();
             DisplayDashRecharge();
-            DisplayResearchCollected();
         }
     }
 
@@ -173,43 +169,22 @@ public class HUD : MonoBehaviour {
         {
             dashSliderGO.SetActive(true);
 
-            if (gun.charging)
+            if (gun.dashRecharge > 0)
             {
                 dashReady.SetActive(false);
             }
             else
             {
-                if (gun.dashRecharge > 0)
+                if (gun.canDash && gun.dashesAvailable != 0)
                 {
-                    dashReady.SetActive(false);
-                }
-                else
-                {
-                    if (gun.canDash && gun.dashesAvailable != 0)
-                    {
-                        dashReady.SetActive(true);
-                    }
+                    dashReady.SetActive(true);
                 }
             }
 
-            if (gun.dashRecharge == 0)
-            {
-                if (gun.charging)
-                {
-                    dashCharge -= Time.deltaTime;
-                    dashSlider.maxValue = 1;
-                    dashSlider.value = dashCharge;
-                }
-                else
-                {
-                    dashCharge = 1;
-                }
-            }
-            else
+            if (gun.dashRecharge != 0)
             {
                 dashSlider.value = gun.dashRecharge;
                 dashSlider.maxValue = 5;
-                dashCharge = 1;
             }
         }
         else
@@ -217,11 +192,6 @@ public class HUD : MonoBehaviour {
             dashSliderGO.SetActive(false);
         }
         
-    }
-
-    void DisplayResearchCollected()
-    {
-        researchCollectedText.text = pickups.researchCollected.ToString();
     }
 }
 

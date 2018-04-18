@@ -28,16 +28,17 @@ public class PlayerMove : MonoBehaviour
 	public float movingPlatformFriction = 7.7f;				//you'll need to tweak this to get the player to stay on moving platforms properly
 	
 	//jumping
-	public Vector3 jumpForce =  new Vector3(0, 13, 0);		//normal jump force
-	public Vector3 secondJumpForce = new Vector3(0, 13, 0); //the force of a 2nd consecutive jump
-	public Vector3 thirdJumpForce = new Vector3(0, 13, 0);	//the force of a 3rd consecutive jump
+	public Vector3 jumpForce =  new Vector3(0, 4, 0);		//normal jump force
+	public Vector3 secondJumpForce = new Vector3(0, 4, 0); //the force of a 2nd consecutive jump
+	public Vector3 thirdJumpForce = new Vector3(0, 4, 0);	//the force of a 3rd consecutive jump
 	public float jumpDelay = 0.1f;							//how fast you need to jump after hitting the ground, to do the next type of jump
 	public float jumpLeniancy = 0.17f;						//how early before hitting the ground you can press jump, and still have it work
 	[HideInInspector]
 	public int onEnemyBounce;					
 	
 	private int onJump;
-	private bool grounded;
+    [HideInInspector]
+    public bool grounded;
 	private Transform[] floorCheckers;
 	private Quaternion screenMovementSpace;
 	private float airPressTime, groundedCount, curAccel, curDecel, curRotateSpeed, slope;
@@ -50,6 +51,11 @@ public class PlayerMove : MonoBehaviour
 	private AudioSource aSource;
 
     public ZeroGravity zeroGravity;
+
+    public PauseMenu pauseMenu;
+
+    [HideInInspector]
+    public Vector3 playerVelocityBeforePause;
 
     //setup
     void Awake()
@@ -89,59 +95,70 @@ public class PlayerMove : MonoBehaviour
 	//get state of player, values and input
 	void Update()
 	{
-        if (zeroGravity.inZeroGravityZone)
+        if (!PauseMenu.isPaused)
         {
-            maxSpeed = 4.5f;
-        }
-        else
-        {
-            maxSpeed = 9;
-        }
+            if (zeroGravity.inZeroGravityZone)
+            {
+                maxSpeed = 4.5f;
+            }
+            else
+            {
+                maxSpeed = 9;
+            }
 
-		//stops rigidbody "sleeping" if we don't move, which would stop collision detection
-		rigid.WakeUp();
-		//handle jumping
-		//JumpCalculations ();
-		//adjust movement values if we're in the air or on the ground
-		curAccel = (grounded) ? accel : airAccel;
-		curDecel = (grounded) ? decel : airDecel;
-		curRotateSpeed = (grounded) ? rotateSpeed : airRotateSpeed;
-				
-		//get movement axis relative to camera
-		screenMovementSpace = Quaternion.Euler (0, mainCam.eulerAngles.y, 0);
-		screenMovementForward = screenMovementSpace * Vector3.forward;
-		screenMovementRight = screenMovementSpace * Vector3.right;
-		
-		//get movement input, set direction to move in
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
-		
-		//only apply vertical input to movemement, if player is not sidescroller
-		if(!sidescroller)
-			direction = (screenMovementForward * v) + (screenMovementRight * h);
-		else
-			direction = Vector3.right * h;
-		moveDirection = transform.position + direction;
+            //stops rigidbody "sleeping" if we don't move, which would stop collision detection
+            rigid.WakeUp();
+            //handle jumping
+            JumpCalculations();
+            //adjust movement values if we're in the air or on the ground
+            curAccel = (grounded) ? accel : airAccel;
+            curDecel = (grounded) ? decel : airDecel;
+            curRotateSpeed = (grounded) ? rotateSpeed : airRotateSpeed;
+
+            //get movement axis relative to camera
+            screenMovementSpace = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
+            screenMovementForward = screenMovementSpace * Vector3.forward;
+            screenMovementRight = screenMovementSpace * Vector3.right;
+
+            //get movement input, set direction to move in
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+
+            //only apply vertical input to movemement, if player is not sidescroller
+            if (!sidescroller)
+                direction = (screenMovementForward * v) + (screenMovementRight * h);
+            else
+                direction = Vector3.right * h;
+            moveDirection = transform.position + direction;
+        }
 	}
 	
 	//apply correct player movement (fixedUpdate for physics calculations)
 	void FixedUpdate() 
 	{
-		//are we grounded
-		grounded = IsGrounded ();
-		//move, rotate, manage speed
-		characterMotor.MoveTo (moveDirection, curAccel, 0.7f, true);
-		if (rotateSpeed != 0 && direction.magnitude != 0)
-			characterMotor.RotateToDirection (moveDirection , curRotateSpeed * 5, true);
-		characterMotor.ManageSpeed (curDecel, maxSpeed + movingObjSpeed.magnitude, true);
-		//set animation values
-		if(animator)
-		{
-			animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
-			animator.SetBool("Grounded", grounded);
-			animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
-		}
-	}
+        if (!PauseMenu.isPaused)
+        {
+            playerVelocityBeforePause = rigid.velocity;
+            //are we grounded
+            grounded = IsGrounded();
+            //move, rotate, manage speed
+            characterMotor.MoveTo(moveDirection, curAccel, 0.7f, true);
+            if (rotateSpeed != 0 && direction.magnitude != 0)
+                characterMotor.RotateToDirection(moveDirection, curRotateSpeed * 5, true);
+            characterMotor.ManageSpeed(curDecel, maxSpeed + movingObjSpeed.magnitude, true);
+            //set animation values
+            if (animator)
+            {
+                animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
+                animator.SetBool("Grounded", grounded);
+                animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
+            }
+        }
+        else
+        {
+            rigid.velocity = Vector3.zero;
+        }
+    }
 	
 	//prevents rigidbody from sliding down slight slopes (read notes in characterMotor class for more info on friction)
 	void OnCollisionStay(Collision other)

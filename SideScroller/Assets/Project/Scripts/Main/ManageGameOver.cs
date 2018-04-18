@@ -13,12 +13,18 @@ public class ManageGameOver : MonoBehaviour {
 
     public GameObject HUD;
 
+    public PauseMenu pauseMenu;
+
+    public bool playerIsDead = false;
+
     float fadeTime = 3;
 
     void Update()
     {
         if (lives.lives <= 0)
         {
+            pauseMenu.canBePaused = false;
+            playerIsDead = true;
             HUD.SetActive(false);
             Destroy(player);
             gameOver.SetActive(true);
